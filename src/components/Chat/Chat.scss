@@ -16,7 +16,8 @@
 
   .chat__content {
     width: 100%;
-    flex: 1 0 auto;
+    height: 100%;
+    flex: 0 1 auto;
     max-height: calc(100vh - 120px);
     padding: 5px 20px;
     display: flex;
