@@ -1,7 +1,7 @@
 import React from 'react';
 import './ChatHeader.scss';
 
-import leftArrow from '../../../assets/images/leftArrow.png';
+import leftArrow from '../../../../../assets/images/leftArrow.png';
 
 function ChatHeader(props) {
   return(
