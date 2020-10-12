@@ -19,7 +19,10 @@ function App(props) {
       setInnerHeight(window.innerHeight);
     }
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+
+    return () => {
+      window.removeEventListener('resize', update);
+    };
   }, []);
   
   return (
