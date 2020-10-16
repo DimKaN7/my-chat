@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import './Chats.scss';
 
 import ChatSnippet from './ChatSnippet/ChatSnippet';
 import {db} from '../../../firebase';
+import {setChats, setUser} from '../../../actions/actions';
 
 const Chats = (props) => {
+  const {
+    chats, setChats,
+    user, setUser
+  } = props;
   // const chats = [
   //   {
   //     user: 'Someone',
@@ -18,37 +24,71 @@ const Chats = (props) => {
   //   }
   // ];
 
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = db.collection('users')
-      .where('__name__', '==', '3u79UQZxyvpxMBeKQvCz')
-      .onSnapshot(snap => {
+    // if (!chats) {
+      const sortChats = (c) => {
+        console.log(c.chats);
+        const result =  {
+          ...c,
+          chats: c.chats.sort((a, b) => b.messages[b.messages.length - 1].time.seconds - a.messages[a.messages.length - 1].time.seconds),
+        };
+        return result;
+      }
+      const unsubscribeChats = db.collection('chats')
+        .where('users', 'array-contains', user.id)
+        .onSnapshot(snap => {
           snap.docs.map(doc => {
-            const chat = {
-              id: doc.id,
-              ...doc.data()
-            };
-            setChats(...chats, chat.chats);
-            // console.log(chat.chats);
+            db.collection('users')
+              .where('__name__', '==', doc.data().users.find(u => u !== user.id))
+              .get()
+              .then(snap => {
+                const id = doc.id;
+                const companion = snap.docs[0].data().userName;
+                const messages = doc.data().messages;
+                const chat = {
+                  id,
+                  companion,
+                  messages,
+                };
+                setChats([chat]);
+              });
+          });
         });
-    });
 
-    return () => {
-      unsubscribe();
-    }
+      return () => {
+        console.log('unmount');
+        unsubscribeChats();
+      }
+    // }
   }, []);
+
+  useEffect(() => {
+    console.log(chats);
+    console.log(user);
+  }, [chats, user]);
 
   return (
     <div className='chats'>
-      {chats.map((c, i) => {
-        return <ChatSnippet key={i} 
-                  lastMessage={c.messages[c.messages.length - 1]}
-                  companion={c.companion}
-                />
+      {chats.map(c => {
+        return <ChatSnippet key={c.id} 
+                  chat={c} />
       })}
     </div>
   );
 }
 
-export default Chats;
+const mapStateToProps = ({chats, user}) => {
+  return {
+    chats,
+    user,
+  }
+}
+
+const mapDispatchToProps = {
+  setChats,
+  setUser,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chats);

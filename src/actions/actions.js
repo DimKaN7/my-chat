@@ -4,3 +4,17 @@ export const setPage = (page) => {
     payload: page,
   }
 }
+
+export const setChats = (chats) => {
+  return {
+    type: 'SET_CHATS',
+    payload: chats,
+  }
+}
+
+export const setUser = (user) => {
+  return {
+    type: 'SET_USER',
+    payload: user,
+  }
+}

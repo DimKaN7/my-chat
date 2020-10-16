@@ -7,6 +7,7 @@ import Login from '../Login/Login';
 
 import {setPage} from '../../actions/actions';
 import MainPage from '../MainPage/MainPage';
+import Chat from '../MainPage/Chats/Chat/Chat';
 
 function App(props) {
   const {page, setPage} = props;
@@ -30,6 +31,7 @@ function App(props) {
       <div className="app" style={{height: `${innerHeight}px`}}>
         <Route path='/' exact component={Login}/>
         <Route path='/p/:page' exact component={MainPage}/>
+        <Route path='/p/chats/:id' exact component={Chat}/>
       </div>
     </Router>
   );

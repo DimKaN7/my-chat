@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import './ChatSnippet.scss';
 
 const ChatSnippet = (props) => {
-  const {companion, lastMessage} = props;
-  const {message, time} = lastMessage;
+  const {chat} = props;
+  console.log(chat);
+
+  const history = useHistory();
 
   const getTime = (time) => {
     // const nowS = Math.floor(new Date().getTime() / 1000);
@@ -15,33 +18,44 @@ const ChatSnippet = (props) => {
     const y = now.getFullYear();
 
     const timeDate = new Date(time * 1000);
-    console.log(timeDate);
+    const resultD = timeDate.getDate() < 10 ? `0${timeDate.getDate()}` : `${timeDate.getDate()}`;
+    const resultMnth = timeDate.getMonth() + 1 < 10 ? `0${timeDate.getMonth() + 1}` : `${timeDate.getMonth() + 1}`;
+    const resultY = `${timeDate.getFullYear() % 100}`;
+    const resultH = timeDate.getHours() < 10 ? `0${timeDate.getHours()}` : `${timeDate.getHours()}`;
+    const resultM = timeDate.getMinutes() < 10 ? `0${timeDate.getMinutes()}` : `${timeDate.getMinutes()}`;
     if (y - timeDate.getFullYear() >= 1) {
-      return `${timeDate.getDate()}.${timeDate.getMonth()}.${timeDate.getFullYear()}`;
+      return `${resultD}.${resultMnth}.${resultY}`;
     } else if (mnth - timeDate.getMonth() >= 1 || 
-                h - timeDate.getHours() + 24 * (d - timeDate.getDate()) > 24) {
-      return `${timeDate.getDate()}.${timeDate.getMonth()}`;
+                h - timeDate.getHours() + 24 * (d - timeDate.getDate()) > 24) {        
+      return `${resultD}.${resultMnth}`;
     } else {
-      return `${timeDate.getHours()}:${timeDate.getMinutes()}`;
+      return `${resultH}:${resultM}`;
     }
   } 
+  const getLastMessage = (messages) => {
+    return messages[messages.length - 1];
+  }
 
   useEffect(() => {
-    // getTime(time.seconds);
-    // console.log('lol')
+
   }, []);
 
+  const onClick = () => {
+    history.push(`/p/chats/${chat.id}`);
+  }
+
   return (
-    <div className='snippet'>
+    <div className='snippet' onClick={onClick}>
       <div className='snippet__avatar'>
         
       </div>
       <div className='snippet__lastMessage'>
-        <span className='snippet__user'>{companion}</span>
-        <span className='snippet__message'>{message}</span>
+        <span className='snippet__user'>{chat.companion}</span>
+        <span className='snippet__message'>{getLastMessage(chat.messages).message}</span>
       </div>
       <div className='snippet__time'>
-        <span>{getTime(time.seconds)}</span>
+        <span>{getTime(getLastMessage(chat.messages).time.seconds)}</span>
+        {/* time.seconds with firebase !!!!!  */}
       </div>
     </div>
   );

@@ -4,9 +4,15 @@ import './ChatHeader.scss';
 import leftArrow from '../../../../../assets/images/leftArrow.png';
 
 function ChatHeader(props) {
+  const {history} = props;
+
+  const onClick = () => {
+    history.goBack();
+  }
+
   return(
     <div className='chat-header'>
-      <div className='chat-header__back'>
+      <div className='chat-header__back' onClick={onClick}>
         <img src={leftArrow}/>
       </div>
       <div className='chat-header__friend'>

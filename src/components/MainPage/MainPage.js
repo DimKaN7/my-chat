@@ -23,7 +23,7 @@ function MainPage(props) {
     <div className='main-page' style={{height: `${innerHeight}px`}}>
       <div className='main-page__content'>
         <Switch>
-          <Route path='/p/chats' component={Chats}/>
+          <Route path='/p/chats/' component={Chats}/>
           <Route path='/p/friends' component={Friends}/>
           <Route path='/p/settings' component={Settings}/>
         </Switch>
