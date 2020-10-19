@@ -4,7 +4,7 @@ import './ChatHeader.scss';
 import leftArrow from '../../../../../assets/images/leftArrow.png';
 
 function ChatHeader(props) {
-  const {history} = props;
+  const {history, companion} = props;
 
   const onClick = () => {
     history.goBack();
@@ -18,7 +18,7 @@ function ChatHeader(props) {
       <div className='chat-header__friend'>
         <div className='friend-info'>
           <div className='friend-info__name'>
-            <span>Sophia</span>
+            <span>{companion.userName}</span>
           </div>
           <div className='friend-info__status'>
             <span>Online</span>

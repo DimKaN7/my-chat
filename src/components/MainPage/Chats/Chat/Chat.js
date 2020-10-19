@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {connect} from 'react-redux';
+import * as firebase from 'firebase';
 import './Chat.scss';
 
 import paperClip from '../../../../assets/images/paperclip.png';
@@ -10,25 +11,33 @@ import send from '../../../../assets/images/send.png';
 import ChatHeader from './ChatHeader/ChatHeader';
 import Message from './Message/Message';
 import useDeviceDetect from '../../../../tools/hooks/useDeviceDetect';
+import {setChats} from '../../../../actions/actions';
+import {db} from '../../../../firebase';
 
 function Chat(props) {
   const {
+    user,
     chats, setChats,
+    chat,
   } = props;
-  console.log(props);
 
   const [message, setMessage] = useState('');
+  // const [messages, setMessages] = useState(chat.messages);
   const isMobile = useDeviceDetect();
   const history = useHistory();
   const match = useRouteMatch();
   
-  const chat = useRef(null);
+  const chatContent = useRef(null);
   const input = useRef(null);
   const form = useRef(null);
 
   useEffect(() => {
+    console.log(chats);
+  }, []);
+
+  useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [chats]);
 
   const onChange = (e) => {
     // cделать автозайз
@@ -39,7 +48,7 @@ function Chat(props) {
   // const onFocus = () => {}
 
   const scrollToBottom = () => {
-    chat.current.scrollTo({top: chat.current.scrollHeight, behavior: 'smooth'});
+    chatContent.current.scrollTo({top: chatContent.current.scrollHeight, behavior: 'smooth'});
   }
 
   const onKeyDown = (e) => {
@@ -50,30 +59,30 @@ function Chat(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const hours = new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`;
-    const minutes = new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`;
     const m = {
       message: message,
-      time: `${hours}:${minutes}`,
-      my: true,
+      time: firebase.firestore.Timestamp.fromDate(new Date()),
+      to: chat.companion.id,
     }
-    setMessages([...messages, m]);
-    setMessage('');
+    setMessage(''); 
+    db.collection('chats').doc(chat.id).update({
+      messages: [...chat.messages, m],
+    });
     input.current.focus();
   }
 
   return(
     <div className='chat'>
-      <ChatHeader history={history}/>
-      <div className='chat__content' ref={chat}>
+      <ChatHeader history={history} companion={chat.companion}/>
+      <div className='chat__content' ref={chatContent}>
         <TransitionGroup
           component={null}>
-          {messages.map((m, id) => 
+          {chats.find(c => c.id === chat.id).messages.map((m, index) => 
             <CSSTransition
-              key={id}
+              key={index}
               timeout={400}
               classNames="mess">
-              <Message message={m.message} time={m.time} my={m.my}/>
+              <Message message={m.message} time={m.time.seconds} mine={m.to !== user.id}/>
             </CSSTransition>
           )}
         </TransitionGroup>
@@ -100,9 +109,10 @@ function Chat(props) {
   );
 }
 
-const mapStateToProps = ({chats}) => {
+const mapStateToProps = ({chats, user}) => {
   return {
     chats,
+    user,
   }
 }
 

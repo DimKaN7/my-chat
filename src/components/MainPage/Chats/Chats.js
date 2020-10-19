@@ -28,46 +28,14 @@ const Chats = (props) => {
 
   useEffect(() => {
     // if (!chats) {
-      const sortChats = (c) => {
-        console.log(c.chats);
-        const result =  {
-          ...c,
-          chats: c.chats.sort((a, b) => b.messages[b.messages.length - 1].time.seconds - a.messages[a.messages.length - 1].time.seconds),
-        };
-        return result;
-      }
-      const unsubscribeChats = db.collection('chats')
-        .where('users', 'array-contains', user.id)
-        .onSnapshot(snap => {
-          snap.docs.map(doc => {
-            db.collection('users')
-              .where('__name__', '==', doc.data().users.find(u => u !== user.id))
-              .get()
-              .then(snap => {
-                const id = doc.id;
-                const companion = snap.docs[0].data().userName;
-                const messages = doc.data().messages;
-                const chat = {
-                  id,
-                  companion,
-                  messages,
-                };
-                setChats([chat]);
-              });
-          });
-        });
-
-      return () => {
-        console.log('unmount');
-        unsubscribeChats();
-      }
+      
     // }
   }, []);
 
-  useEffect(() => {
-    console.log(chats);
-    console.log(user);
-  }, [chats, user]);
+  // useEffect(() => {
+  //   console.log(chats);
+  //   console.log(user);
+  // }, [chats, user]);
 
   return (
     <div className='chats'>
