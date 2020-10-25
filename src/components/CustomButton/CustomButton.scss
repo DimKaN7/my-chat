@@ -1,0 +1,16 @@
+.custom-button {
+  width: 50%;
+  height: 40px;
+  font-size: 16px;
+  background: linear-gradient(50deg, rgba(4,121,251,1) 0%, rgba(51,147,255,1) 100%);
+  border: none;
+  padding: 10px 0;
+  border-radius: 20px;
+  color: white;
+
+  &.white {
+    background: white;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+}

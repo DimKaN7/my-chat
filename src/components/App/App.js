@@ -3,12 +3,13 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './App.scss';
 
-import Login from '../Login/Login';
-
 import {setPage, setChats, setUser} from '../../actions/actions';
 import {db} from '../../firebase';
 import MainPage from '../MainPage/MainPage';
 import Chat from '../MainPage/Chats/Chat/Chat';
+import WelcomePage from '../WelcomePage/WelcomePage';
+import SignIn from '../SignIn/SignIn';
+import SignUp from '../SignUp/SignUp';
 
 function App(props) {
   const {
@@ -69,7 +70,9 @@ function App(props) {
   return (
     <Router>
       <div className="app" style={{height: `${innerHeight}px`}}>
-        <Route path='/' exact component={Login}/>
+        <Route path='/' exact component={WelcomePage}/>
+        <Route path='/signIn' exact component={SignIn}/>
+        <Route path='/signUp' exact component={SignUp}/>
         <Route path='/p/:page' exact component={MainPage}/>
         <Route path='/p/chats/:id' exact render={({match}) => {
           const chat = chats.find(c => c.id === match.params.id);

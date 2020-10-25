@@ -32,7 +32,7 @@ function Chat(props) {
   const form = useRef(null);
 
   useEffect(() => {
-    console.log(chats);
+    // console.log(chats);
   }, []);
 
   useEffect(() => {

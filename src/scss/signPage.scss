@@ -1,0 +1,67 @@
+.sign-wrapper, .welcome {
+  width: 100%;
+  max-width: 375px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 0 auto;
+
+  .page__header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    flex: 0 0 auto;
+  }
+  
+  .page__description {
+    font-size: 14px;
+    opacity: 0.5;
+    margin-bottom: 20px;
+    flex: 0 0 auto;
+    text-align: center;
+  }
+  
+  .page__image {
+    width: 70%;
+    height: 100%;
+    object-fit: contain;
+    max-width: 512px;
+    margin-bottom: 40px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    flex: 0 1 auto;
+  }
+  
+  .page__buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+  
+    >button:first-child {
+      margin-bottom: 20px;
+    }
+  }
+
+  .sign-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .sign__inputs {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    >button {
+      margin-bottom: 20px;
+    }
+  }
+}
