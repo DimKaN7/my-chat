@@ -39,7 +39,7 @@ const Chats = (props) => {
 
   return (
     <div className='chats'>
-      {chats.map(c => {
+      {chats && chats.map(c => {
         return <ChatSnippet key={c.id} 
                   chat={c} />
       })}

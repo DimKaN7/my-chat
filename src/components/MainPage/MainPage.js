@@ -8,6 +8,7 @@ import Footer from './Footer/Footer';
 import Chats from './Chats/Chats';
 import Friends from './Friends/Friends';
 import Settings from './Settings/Settings';
+import PrivateRoute from '../PrivateRoute/PrivateRoute';
 
 function MainPage(props) {
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
@@ -23,9 +24,9 @@ function MainPage(props) {
     <div className='main-page' style={{height: `${innerHeight}px`}}>
       <div className='main-page__content'>
         <Switch>
-          <Route path='/p/chats/' component={Chats}/>
-          <Route path='/p/friends' component={Friends}/>
-          <Route path='/p/settings' component={Settings}/>
+          <PrivateRoute path='/p/chats/' component={Chats}/>
+          <PrivateRoute path='/p/friends' component={Friends}/>
+          <PrivateRoute path='/p/settings' component={Settings}/>
         </Switch>
       </div>
       <Footer></Footer>

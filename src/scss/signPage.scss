@@ -1,4 +1,12 @@
+%page-desc-error {
+  font-size: 14px;
+  margin-bottom: 10px;
+  flex: 0 0 34px;
+  text-align: center;
+}
+
 .sign-wrapper, .welcome {
+  position: relative;
   width: 100%;
   max-width: 375px;
   height: 100%;
@@ -17,11 +25,14 @@
   }
   
   .page__description {
-    font-size: 14px;
+    @extend %page-desc-error;
     opacity: 0.5;
-    margin-bottom: 20px;
-    flex: 0 0 auto;
-    text-align: center;
+  }
+
+  .page__error {
+    @extend %page-desc-error;
+    opacity: 1;
+    color: red;
   }
   
   .page__image {

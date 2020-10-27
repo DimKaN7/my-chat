@@ -1,7 +1,7 @@
 const intitalState = {
   page: 0,
   user: {
-    id: '3u79UQZxyvpxMBeKQvCz',
+    // id: '3u79UQZxyvpxMBeKQvCz',
   },
   chats: [
     /*

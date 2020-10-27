@@ -14,15 +14,17 @@
     border: none;
     padding-bottom: 5px;
 
-    &:focus + .custom-input__label span, 
-    &:valid + .custom-input__label span {
+    &:focus + .custom-input__label span,
+    &:valid + .custom-input__label span 
+    {
       transform: translateY(-130%);
       font-size: 14px;
       color: #0479fb;
     }
 
-    &:focus + .custom-input__label:after, 
-    &:valid + .custom-input__label:after {
+    &:focus + .custom-input__label:after,
+    &:valid + .custom-input__label:after 
+    {
       transform: translateX(0%);
     }
 
