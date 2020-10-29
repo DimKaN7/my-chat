@@ -2,14 +2,38 @@ import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({user, component: Component, ...restProps}) => {
+const PrivateRoute = ({user, signedInTo='', unsignedInTo='', component: Component, render, ...restProps}) => {
   return (
-    <Route 
-      {...restProps}
-      render={(props) => {
-        return user.id ? <Component {...props} /> : <Redirect to='/'/>
-      }}
-    />
+    <>
+      {
+        Component && 
+        <Route 
+          {...restProps}
+          // signedInTo = если вошел, сработает эта ссылка
+          // unsignedInTo = если не вошел, сработает эта ссылка
+          component={() => signedInTo 
+                                      ? !user.id ? <Component /> : <Redirect to={signedInTo}/>
+                                      : user.id ? <Component /> : <Redirect to={unsignedInTo}/>
+          }
+        />
+      }
+      {
+        render && 
+        <Route 
+          {...restProps}
+          render={(props) => signedInTo 
+                                  ? !user.id ? render(props) : <Redirect to={signedInTo}/>
+                                  : user.id ? render(props) : <Redirect to={unsignedInTo}/>
+          }
+        />
+      }
+    </>
+    //<Route 
+    //  {...restProps}
+    //  render={(props) => {
+    //    return user.id ? <Component {...props} /> : <Redirect to='/'/>
+    //  }}
+    ///>
   );
 }
 

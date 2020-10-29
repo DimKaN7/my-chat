@@ -1,15 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import './Chats.scss';
 
 import ChatSnippet from './ChatSnippet/ChatSnippet';
-import {db} from '../../../firebase';
-import {setChats, setUser} from '../../../actions/actions';
+import {setChats, setLoading} from '../../../actions/actions';
+import Loader from '../../Loader/Loader';
 
 const Chats = (props) => {
   const {
     chats, setChats,
-    user, setUser
+    // user, setUser,
+    loading, setLoading,
   } = props;
   // const chats = [
   //   {
@@ -24,39 +25,28 @@ const Chats = (props) => {
   //   }
   // ];
 
-  // const [chats, setChats] = useState([]);
-
-  useEffect(() => {
-    // if (!chats) {
-      
-    // }
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(chats);
-  //   console.log(user);
-  // }, [chats, user]);
-
   return (
     <div className='chats'>
-      {chats && chats.map(c => {
-        return <ChatSnippet key={c.id} 
-                  chat={c} />
-      })}
+      {
+        loading 
+          ? <Loader />
+          : chats && chats.map(c => {
+              return <ChatSnippet key={c.id} chat={c} />
+            })}
     </div>
   );
 }
 
-const mapStateToProps = ({chats, user}) => {
+const mapStateToProps = ({chats, loading}) => {
   return {
     chats,
-    user,
+    loading,
   }
 }
 
 const mapDispatchToProps = {
   setChats,
-  setUser,
+  setLoading,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chats);

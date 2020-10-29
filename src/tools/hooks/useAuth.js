@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+// import {useState, useEffect} from 'react';
 import {auth} from '../../firebase';
 
 const useAuth = () => {
@@ -10,21 +10,14 @@ const useAuth = () => {
   const signUp = (email, password) => {
     return auth.createUserWithEmailAndPassword(email, password);
   }
-
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(u => {
-  //     setUser(u);
-  //   });
-
-  //   return () => {
-  //     unsubscribe();
-  //   }
-  // }, []);
+  const logout = () => {
+    return auth.signOut();
+  }
 
   return {
     signUp,
     signIn,
-    // user,
+    logout,
   };
 }
 

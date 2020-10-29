@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {useHistory} from 'react-router-dom';
 import '../../scss/signPage.scss';
 
 import talking from '../../assets/images/talking.png';
 import CustomButton from '../CustomButton/CustomButton';
 
-const WelcomePage = (props) => {
+const WelcomePage = () => {
   const history = useHistory();
 
   const onSignUp = (e) => {

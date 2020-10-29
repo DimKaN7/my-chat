@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './App.scss';
 
-import {setPage, setChats, setUser} from '../../actions/actions';
+import {setChats, setUser, setLoading} from '../../actions/actions';
 import {db} from '../../firebase';
 import MainPage from '../MainPage/MainPage';
 import Chat from '../MainPage/Chats/Chat/Chat';
@@ -13,11 +13,10 @@ import PrivateRoute from '../PrivateRoute/PrivateRoute';
 
 function App(props) {
   const {
-    page, setPage,
     chats, setChats,
     user, setUser,
+    setLoading,
   } = props;
-
   // vieport в браузерах скидывает поле ввода за область
   // экрана, для этого ставим высоту равную innerHeight
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
@@ -40,6 +39,7 @@ function App(props) {
 
   useEffect(() => {
     if (user.id) {
+      setLoading(true);
       const sortChats = (c) => {
         console.log(c.chats);
         const result =  {
@@ -70,6 +70,7 @@ function App(props) {
                   messages,
                 };
                 setChats([chat]);
+                setLoading(false);
               });
           });
         });
@@ -82,19 +83,20 @@ function App(props) {
   return (
     <Router>
       <div className="app" style={{height: `${innerHeight}px`}}>
-        <Route path='/' exact component={WelcomePage}/>
-        <Route path='/signIn' exact render={() => {
+        <PrivateRoute path='/' exact signedInTo='/p/chats' component={WelcomePage}/>
+        <PrivateRoute path='/signIn' exact signedInTo='/p/chats' render={() => {
           return <Sign isSignUp={false}/>
         }}/>
-        <Route path='/signUp' exact render={() => {
+        <PrivateRoute path='/signUp' exact signedInTo='/p/chats' render={() => {
           return <Sign isSignUp={true}/>
         }}/>
         <Route path='/p' exact render={() => {
           return <Redirect to='/p/chats'/>
         }}/>
-        <Route path='/p/:page' exact component={MainPage}/>
-        <PrivateRoute path='/p/chats/:id' exact component={({match}) => {
-          const chat = chats.find(c => c.id === match.params.id);
+        <PrivateRoute path='/p/:page' exact unsignedInTo='/' component={MainPage}/>
+        {/* рендер, так как почему то с компонентом были косяки (анимация и скрытие клавиатуры) */}
+        <Route path='/p/chats/:id' exact render={({match}) => {
+          const chat = chats && chats.find(c => c.id === match.params.id);
           return <Chat chat={chat} />
         }}/>
       </div>
@@ -102,18 +104,17 @@ function App(props) {
   );
 }
 
-const mapStateToProps = ({page, chats, user}) => {
+const mapStateToProps = ({chats, user}) => {
   return {
-    page,
     chats,
     user,
   }
 }
 
 const mapDispatchToProps = {
-  setPage,
   setChats,
   setUser,
+  setLoading,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

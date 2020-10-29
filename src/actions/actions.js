@@ -18,3 +18,10 @@ export const setUser = (user) => {
     payload: user,
   }
 }
+
+export const setLoading = (loading) => {
+  return {
+    type: 'SET_LOADING',
+    payload: loading,
+  }
+}

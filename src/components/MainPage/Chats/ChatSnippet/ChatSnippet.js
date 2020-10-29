@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router-dom';
 import './ChatSnippet.scss';
 
@@ -9,10 +9,6 @@ const ChatSnippet = (props) => {
   // console.log(chat);
 
   const history = useHistory();
-
-  useEffect(() => {
-
-  }, []);
 
   const onClick = () => {
     history.push(`/p/chats/${chat.id}`);

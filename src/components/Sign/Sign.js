@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useHistory, Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -7,19 +7,18 @@ import CustomButton from '../CustomButton/CustomButton';
 import useAuth from '../../tools/hooks/useAuth';
 import Loader from '../Loader/Loader';
 import useFirestore from '../../tools/hooks/useFirestore';
-import {setUser} from '../../actions/actions';
-import {auth} from '../../firebase';
+import {setUser, setLoading} from '../../actions/actions';
 
 const Sign = (props) => {
   const {
     user, setUser,
+    loading, setLoading,
     isSignUp=false,
   } = props;
 
   const history = useHistory();
   const { signUp, signIn } = useAuth();
   const { addDocument } = useFirestore();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,16 +57,16 @@ const Sign = (props) => {
               verified: false,
             };
             addDocument(user, u.user.uid, 'users')
-            .then(() => {
-              setUser({
-                id: u.user.uid,
+              .then(() => {
+                setUser({
+                  id: u.user.uid,
+                });
+                localStorage.setItem('id', u.user.uid);
+                history.push('/p/chats');
+              })
+              .catch((e) => {
+                setError('Something went wrong');
               });
-              // localStorage.setItem('id', u.user.uid);
-              history.push('/p/chats');
-            })
-            .catch((e) => {
-              setError('Something went wrong');
-            });
             setLoading(false);
           })
           // some error in email or passwords
@@ -103,6 +102,8 @@ const Sign = (props) => {
         break;
       case 'confPassword': 
         setConfPassword(e.target.value);
+        break;
+      default:
         break;
     }
   }
@@ -143,14 +144,16 @@ const Sign = (props) => {
   );
 }
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = ({user, loading}) => {
   return {
     user,
+    loading,
   }
 }
 
 const mapDispatchToProps = {
   setUser,
+  setLoading,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sign);

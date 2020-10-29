@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {useHistory, useRouteMatch} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {connect} from 'react-redux';
 import * as firebase from 'firebase';
@@ -11,29 +11,24 @@ import send from '../../../../assets/images/send.png';
 import ChatHeader from './ChatHeader/ChatHeader';
 import Message from './Message/Message';
 import useDeviceDetect from '../../../../tools/hooks/useDeviceDetect';
-import {setChats} from '../../../../actions/actions';
 import {db} from '../../../../firebase';
+import Loader from '../../../Loader/Loader';
 
-function Chat(props) {
+const Chat = (props) => {
   const {
     user,
-    chats, setChats,
+    chats,
     chat,
   } = props;
 
   const [message, setMessage] = useState('');
-  // const [messages, setMessages] = useState(chat.messages);
+
   const isMobile = useDeviceDetect();
   const history = useHistory();
-  const match = useRouteMatch();
   
   const chatContent = useRef(null);
   const input = useRef(null);
   const form = useRef(null);
-
-  useEffect(() => {
-    // console.log(chats);
-  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -48,7 +43,9 @@ function Chat(props) {
   // const onFocus = () => {}
 
   const scrollToBottom = () => {
-    chatContent.current.scrollTo({top: chatContent.current.scrollHeight, behavior: 'smooth'});
+    try {
+      chatContent.current.scrollTo({top: chatContent.current.scrollHeight, behavior: 'smooth'});
+    } catch (e) {}
   }
 
   const onKeyDown = (e) => {
@@ -73,38 +70,44 @@ function Chat(props) {
 
   return(
     <div className='chat'>
-      <ChatHeader history={history} companion={chat.companion}/>
-      <div className='chat__content' ref={chatContent}>
-        <TransitionGroup
-          component={null}>
-          {chats.find(c => c.id === chat.id).messages.map((m, index) => 
-            <CSSTransition
-              key={index}
-              timeout={400}
-              classNames="mess">
-              <Message message={m.message} time={m.time.seconds} mine={m.to !== user.id}/>
-            </CSSTransition>
-          )}
-        </TransitionGroup>
-        <div></div>
-      </div>
-      <form className='chat__message' onSubmit={onSubmit} ref={form}>
-        <div className='message-field'>
-          <div className='message-field__attachment image-cont'>
-            <img src={paperClip}/>
-          </div>
-          <textarea placeholder='Type a message' 
+      {!chat  
+        ? <Loader/>
+        : <>
+            <ChatHeader history={history} companion={chat.companion}/>
+            <div className='chat__content' ref={chatContent}>
+              <TransitionGroup
+                component={null}>
+                {chat.messages.map((m, index) => 
+                  <CSSTransition
+                    key={index}
+                    timeout={400}
+                    classNames="mess">
+                    <Message message={m.message} time={m.time.seconds} mine={m.to !== user.id}/>
+                  </CSSTransition> 
+                )}
+              </TransitionGroup>
+              <div></div>
+            </div>
+            <form className='chat__message' onSubmit={onSubmit} ref={form}>
+              <div className='message-field'>
+                <div className='message-field__attachment image-cont'>
+                  <img src={paperClip}/>
+                </div>
+                <textarea className='message-field__input' placeholder='Type a message' 
                   ref={input}
-                  type='submit'
+                  type='text'
                   onChange={onChange}
                   value={message} 
                   onKeyDown={onKeyDown}
-                  />
-          <div className='message-field__send-button image-cont' onClick={onSubmit}>
-            <img src={send}/>
-          </div>
-        </div>
-      </form>
+                  /> 
+                <div className='message-field__send-button image-cont' onClick={onSubmit}>
+                  <img src={send}/>
+                </div>
+              </div>
+            </form>
+          </>
+      }
+      
     </div>
   );
 }
@@ -116,8 +119,4 @@ const mapStateToProps = ({chats, user}) => {
   }
 }
 
-const mapDispatchToProps = {
-  setChats,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps)(Chat);

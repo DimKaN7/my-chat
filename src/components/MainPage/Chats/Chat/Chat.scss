@@ -54,7 +54,7 @@
       flex-direction: row;
       justify-content: space-between;
 
-      >textarea {
+      .message-field__input {
         font-family: inherit;
         width: 75%;
         outline: none;
