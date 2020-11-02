@@ -119,7 +119,7 @@ const Sign = (props) => {
                      : titles.description}</span>
       </div>
       <form className='sign-form' onSubmit={onSubmit}>
-        <div className='sign__inputs'>
+        <div className='sign-form__inputs'>
           <CustomInput placeholder='Email' inputFor='email'
             onChange={onChange}/>
           <CustomInput placeholder='Password' inputFor='password' 

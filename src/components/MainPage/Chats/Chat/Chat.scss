@@ -14,7 +14,7 @@
     }
   }
 
-  .chat__content {
+  &__content {
     width: 100%;
     height: 100%;
     flex: 0 1 auto;
@@ -35,7 +35,7 @@
     }
   }
 
-  .chat__message {
+  &__message {
     width: 100%;
     flex: 0 0 60px;
     display: flex;
@@ -54,7 +54,7 @@
       flex-direction: row;
       justify-content: space-between;
 
-      .message-field__input {
+      &__input {
         font-family: inherit;
         width: 75%;
         outline: none;

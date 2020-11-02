@@ -8,14 +8,12 @@ function Message(props) {
   const {message, time, mine=false} = props;
 
   return (
-    <div className='message'>
-      <div className='message__content-wrapper'
-            style={{justifyContent: mine ? 'flex-end' : 'flex-start'}}>
-        <div className={mine ? 'message__content my' : 'message__content'}>
-          <span>{message}</span>
-          <div className='message__time'>
-            <span>{getTime(time, true)}</span>
-          </div>
+    <div className='message-wrapper' 
+      style={{justifyContent: mine ? 'flex-end' : 'flex-start'}}>
+      <div className={mine ? 'message my' : 'message'}>
+        <span>{message}</span>
+        <div className='message__time'>
+          <span>{getTime(time, true)}</span>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@
     z-index: -1;
   }
 
-  .chat-header__back {
+  &__back {
     width: 30px;
     height: 30px;
 
@@ -36,7 +36,7 @@
     }
   }
 
-  .chat-header__friend {
+  &__friend {
     display: flex;
     flex-direction: row;
     height: 100%;
@@ -48,11 +48,11 @@
       flex-direction: column;
       margin-right: 10px;
 
-      .friend-info__name {
+      &__name {
         font-size: 20px;
       }
 
-      .friend-info__status {
+      &__status {
         font-size: 15px;
         text-align: right;
         opacity: 0.5;

@@ -1,9 +1,10 @@
 .snippet {
+  $c: &;
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 
-  .snippet__avatar {
+  &__avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -14,7 +15,7 @@
     justify-content: center;
   }
 
-  .snippet__lastMessage {
+  &__lastMessage {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -22,16 +23,16 @@
     max-height: 40px;
     overflow: hidden;
 
-    .snippet__user {
+    #{$c}__user {
       font-weight: 600;
     }
 
-    .snippet__message {
+    #{$c}__message {
       opacity: 0.5;
     }
   }
 
-  .snippet__time {
+  &__time {
     font-size: 12px;
     flex: 0 0 auto;
     display: flex;

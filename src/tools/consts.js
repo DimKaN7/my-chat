@@ -1,0 +1,1 @@
+export const pages = ['Chats', 'Friends', 'Settings'];

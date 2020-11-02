@@ -18,9 +18,9 @@ function Footer(props) {
     page, setPage,
   } = props;
 
-  useEffect(() => {
-    setPage(pages.indexOf(match.params.page));
-  }, []);
+  // useEffect(() => {
+  //   setPage(pages.indexOf(match.params.page));
+  // }, []);
 
   const onClick = (index) => {
     if (pages[index] !== match.params.page) {

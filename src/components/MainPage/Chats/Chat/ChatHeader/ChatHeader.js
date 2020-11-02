@@ -28,6 +28,7 @@ function ChatHeader(props) {
         <div className='friend-avatar'></div>
       </div>
     </div>
+    
   );
 }
 

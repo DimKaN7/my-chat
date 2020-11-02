@@ -19,6 +19,7 @@ const Chat = (props) => {
     user,
     chats,
     chat,
+    loading,
   } = props;
 
   const [message, setMessage] = useState('');
@@ -70,7 +71,8 @@ const Chat = (props) => {
 
   return(
     <div className='chat'>
-      {!chat  
+      {
+        loading || !chat
         ? <Loader/>
         : <>
             <ChatHeader history={history} companion={chat.companion}/>
@@ -112,10 +114,11 @@ const Chat = (props) => {
   );
 }
 
-const mapStateToProps = ({chats, user}) => {
+const mapStateToProps = ({chats, user, loading}) => {
   return {
     chats,
     user,
+    loading,
   }
 }
 

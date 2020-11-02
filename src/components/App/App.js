@@ -31,7 +31,6 @@ function App(props) {
     if (id) {
       setUser({id});
     }
-
     return () => {
       window.removeEventListener('resize', update);
     };
@@ -83,7 +82,7 @@ function App(props) {
   return (
     <Router>
       <div className="app" style={{height: `${innerHeight}px`}}>
-        <PrivateRoute path='/' exact signedInTo='/p/chats' component={WelcomePage}/>
+        {/* <PrivateRoute path='/' exact signedInTo='/p/chats' component={WelcomePage}/>
         <PrivateRoute path='/signIn' exact signedInTo='/p/chats' render={() => {
           return <Sign isSignUp={false}/>
         }}/>
@@ -94,6 +93,22 @@ function App(props) {
           return <Redirect to='/p/chats'/>
         }}/>
         <PrivateRoute path='/p/:page' exact unsignedInTo='/' component={MainPage}/>
+        рендер, так как почему то с компонентом были косяки (анимация и скрытие клавиатуры)
+        <Route path='/p/chats/:id' exact render={({match}) => {
+          const chat = chats && chats.find(c => c.id === match.params.id);
+          return <Chat chat={chat} />
+        }}/> */}
+        <Route path='/' exact component={WelcomePage}/>
+        <Route path='/signIn' exact render={() => {
+          return <Sign isSignUp={false}/>
+        }}/>
+        <Route path='/signUp' exact render={() => {
+          return <Sign isSignUp={true}/>
+        }}/>
+        <Route path='/p' exact render={() => {
+          return <Redirect to='/p/chats'/>
+        }}/>
+        <Route path='/p/:page' exact component={MainPage}/>
         {/* рендер, так как почему то с компонентом были косяки (анимация и скрытие клавиатуры) */}
         <Route path='/p/chats/:id' exact render={({match}) => {
           const chat = chats && chats.find(c => c.id === match.params.id);
