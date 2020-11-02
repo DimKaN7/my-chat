@@ -1,3 +1,5 @@
+import {db} from '../firebase';
+
 export const getTime = (time, onlyHours=false) => {
   const now = new Date();
   const h = now.getHours();
@@ -29,4 +31,12 @@ export const getTime = (time, onlyHours=false) => {
 
 export const getLastMessage = (messages) => {
   return messages[messages.length - 1];
+}
+
+export const addDocument = (doc, docId, collection) => {
+  return db.collection(collection).doc(docId).set(doc);
+}
+
+export const getDocument = (docId, collection) => {
+  return db.collection(collection).doc(docId).get();
 }

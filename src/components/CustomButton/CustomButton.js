@@ -3,11 +3,15 @@ import './CustomButton.scss';
 
 const CustomButton = (props) => {
   const {
-    title, onClick, white=false, type='',
+    title, onClick, type='',
+    styles,
   } = props;
 
   return (
-    <button type={type} className={white ? 'custom-button white' : 'custom-button'} onClick={onClick}>{title}</button>
+    <button type={type} className='custom-button' 
+      onClick={onClick} style={styles}>
+      {title}
+    </button>
   );
 }
 

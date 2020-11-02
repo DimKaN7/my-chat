@@ -1,4 +1,4 @@
-.loader-cont {
+.loader {
   width: 100%;
   height: 100%;
   display: flex;
@@ -7,9 +7,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 3;
 
-  .loader-wrapper {
+  &-wrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -19,10 +19,10 @@
     opacity: 0.5;
   }
 
-  .loader {
+  &-cont {
     width: 75px;
     height: 75px;
-    z-index: 1;
+    z-index: 3;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

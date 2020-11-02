@@ -10,6 +10,7 @@ import Chat from '../MainPage/Chats/Chat/Chat';
 import WelcomePage from '../WelcomePage/WelcomePage';
 import Sign from '../Sign/Sign';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import {getDocument} from '../../tools/tools';
 
 function App(props) {
   const {
@@ -27,9 +28,20 @@ function App(props) {
     }
     window.addEventListener('resize', update);
 
+    // const u = JSON.parse(localStorage.getItem('user'));
     const id = localStorage.getItem('id');
     if (id) {
-      setUser({id});
+      setLoading(true);
+      getDocument(id, 'users')
+        .then((doc) => {
+          const {email, userName, verified} = doc.data();
+          const user = {
+            id, email, userName, verified,
+          };
+          setUser(user);
+          setLoading(false);
+        })
+        .catch((e) => console.log(e));
     }
     return () => {
       window.removeEventListener('resize', update);
@@ -39,14 +51,14 @@ function App(props) {
   useEffect(() => {
     if (user.id) {
       setLoading(true);
-      const sortChats = (c) => {
-        console.log(c.chats);
-        const result =  {
-          ...c,
-          chats: c.chats.sort((a, b) => b.messages[b.messages.length - 1].time.seconds - a.messages[a.messages.length - 1].time.seconds),
-        };
-        return result;
-      }
+      // const sortChats = (c) => {
+      //   console.log(c.chats);
+      //   const result =  {
+      //     ...c,
+      //     chats: c.chats.sort((a, b) => b.messages[b.messages.length - 1].time.seconds - a.messages[a.messages.length - 1].time.seconds),
+      //   };
+      //   return result;
+      // }
       const unsubscribeChats = db.collection('chats')
         .where('users', 'array-contains', user.id)
         .onSnapshot(snap => {
@@ -62,12 +74,13 @@ function App(props) {
                   userName: snap.docs[0].data().userName,
                   id: snap.docs[0].id,
                 };
-                const messages = doc.data().messages;
+                const {messages} = doc.data();
                 const chat = {
                   id,
                   companion,
                   messages,
                 };
+                // пока только 1 чат
                 setChats([chat]);
                 setLoading(false);
               });

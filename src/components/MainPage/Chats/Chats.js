@@ -28,11 +28,12 @@ const Chats = (props) => {
   return (
     <div className='chats'>
       {
-        loading 
+        loading || !chats
           ? <Loader />
           : chats && chats.map(c => {
               return <ChatSnippet key={c.id} chat={c} />
-            })}
+            })
+      }
     </div>
   );
 }

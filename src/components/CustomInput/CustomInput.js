@@ -5,6 +5,7 @@ function CustomInput(props) {
   const {
     placeholder, type='text', inputFor,
     onChange,
+    value, // потом убрать 
   } = props;
 
   return (
@@ -12,7 +13,7 @@ function CustomInput(props) {
       <input className='custom-input__input' name='input' 
               autoComplete='off' required type={type}
               onChange={(e) => onChange(e, inputFor)}
-              />
+              value={value}/>
       <label htmlFor='input' className='custom-input__label'>
         <span>{placeholder}</span>
       </label>
