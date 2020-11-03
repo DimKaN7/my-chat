@@ -10,36 +10,36 @@ export const titles = (isSignUp) => {
   }
 }
 
-export const signButtonsStyles = {
+export const buttonsStyle = {
   link: {
     textDecoration: 'none',
   },
-  signBlue: {
+  blue: {
     background: 'linear-gradient(50deg, rgba(4,121,251,1) 0%, rgba(51,147,255,1) 100%)',
     border: 'none',
     color: 'white',
   },
-  signWhite: {
-    background: 'white',
-    border: '1px solid rgba(0, 0, 0, 0.25)',
-    color: 'black',
-  }
-}
-
-export const settingsButtonsStyle = {
-  editProfile: {
-    background: 'linear-gradient(50deg, rgba(4,121,251,1) 0%, rgba(51,147,255,1) 100%)',
-    border: 'none',
-    color: 'white',
-  },
-  logout: {
+  white: {
     background: 'white',
     border: '1px solid rgba(0, 0, 0, 0.25)',
     color: 'black',
   },
-  deleteProfile: {
+  red: {
     background: 'red',
     border: 'none',
     color: 'white',
   }
 }
+
+// export const settingsButtonsStyle = {
+//   editProfile: {
+//     background: 'linear-gradient(50deg, rgba(4,121,251,1) 0%, rgba(51,147,255,1) 100%)',
+//     border: 'none',
+//     color: 'white',
+//   },
+//   logout: {
+//     background: 'white',
+//     border: '1px solid rgba(0, 0, 0, 0.25)',
+//     color: 'black',
+//   },
+// }

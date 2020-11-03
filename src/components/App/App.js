@@ -34,12 +34,13 @@ function App(props) {
       setLoading(true);
       getDocument(id, 'users')
         .then((doc) => {
-          const {email, userName, verified} = doc.data();
+          const {email, userName, verified, password} = doc.data();
           const user = {
-            id, email, userName, verified,
+            id, email, userName, verified, password
           };
           setUser(user);
           setLoading(false);
+          // console.log(user);
         })
         .catch((e) => console.log(e));
     }

@@ -9,7 +9,7 @@ import {setUser} from '../../../actions/actions';
 import Loader from '../../Loader/Loader';
 import edit from '../../../assets/images/edit.png';
 import CustomButton from '../../CustomButton/CustomButton';
-import {settingsButtonsStyle} from '../../../tools/consts';
+import {buttonsStyle} from '../../../tools/consts';
 import SettingPopup from './SettingPopup/SettingPopup';
 
 const Settings = (props) => {
@@ -18,7 +18,7 @@ const Settings = (props) => {
     loading,
   } = props;
 
-  const [showPopup, toggleShowPopup] = useState(true);
+  const [showPopup, toggleShowPopup] = useState(false);
 
   const {logout} = useAuth();
   const history = useHistory();
@@ -44,44 +44,44 @@ const Settings = (props) => {
 
   }
 
+  const onCancelClick = () => {
+    toggleShowPopup(false);
+  }
+
   return (
     <>
       {
         loading 
           ? <Loader /> 
-          : showPopup
-            ? <SettingPopup />
-            : <div className='settings'>
+          : 
+            <>
+              {showPopup && <SettingPopup onCancelClick={onCancelClick}/>}
+              <div className='settings'>
                 <div className="user-info">
                   <div className="user-info__avatar"></div>
                   <div className="user-info__user-name">
                     {user.userName}
-                    {/* <div className="edit"
-                      style={{backgroundImage: `url(${edit})`}}>
-                    </div> */}
                   </div>
                   <div className="user-info__email">
                     {user.email}
-                    {/* <div className="edit"
-                      style={{backgroundImage: `url(${edit})`}}>
-                    </div> */}
                   </div>
                 </div>
                 <div className="settings-actions">
                   <div>
                     <CustomButton title='Edit profile' onClick={onEditClick}
-                      styles={settingsButtonsStyle.editProfile}/>
+                      styles={buttonsStyle.blue}/>
                   </div>
                   <div>
                     <CustomButton title='Logout' onClick={onLogoutClick}
-                      styles={settingsButtonsStyle.logout}/>
+                      styles={buttonsStyle.white}/>
                   </div>
                   <div>
                     <CustomButton title='Delete profile' onClick={onDeleteClick}
-                      styles={settingsButtonsStyle.deleteProfile}/>
+                      styles={buttonsStyle.red}/>
                   </div>
                 </div>
               </div>
+            </>
       }
     </>
   );

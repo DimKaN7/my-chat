@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {useHistory, Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,7 +8,7 @@ import useAuth from '../../tools/hooks/useAuth';
 import Loader from '../Loader/Loader';
 import {addDocument, getDocument} from '../../tools/tools';
 import {setUser, setLoading} from '../../actions/actions';
-import {titles, signButtonsStyles} from '../../tools/consts';
+import {titles, buttonsStyle} from '../../tools/consts';
 
 const Sign = (props) => {
   const {
@@ -17,12 +17,16 @@ const Sign = (props) => {
     isSignUp=false,
   } = props;
 
+  const emailRef = useRef(null);
+  const passRef = useRef(null);
+  const passConfRef = useRef(null);
+
   const history = useHistory();
   const { signUp, signIn } = useAuth();
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('qwe@qwe.com');
-  const [password, setPassword] = useState('123456');
-  const [confPassword, setConfPassword] = useState('');
+  // const [email, setEmail] = useState('qwe@qwe.com');
+  // const [password, setPassword] = useState('123456');
+  // const [confPassword, setConfPassword] = useState('');
 
   // useEffect(() => {
   //   console.log(user);
@@ -30,8 +34,11 @@ const Sign = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passRef.current.value;
     if (isSignUp) {
-      if (confPassword !== password) {
+      const passwordConfirm = passConfRef.current.value;
+      if (passwordConfirm !== password) {
         setError('Passwords don`t match');
       }
       else {
@@ -44,15 +51,17 @@ const Sign = (props) => {
               userName: u.user.email,
               email: u.user.email,
               verified: false,
+              password,
             };
             addDocument(user, u.user.uid, 'users')
               .then(() => {
-                const {userName, verified, email} = user;
+                const {userName, verified, email, password} = user;
                 setUser({
                   id: u.user.uid,
                   userName,
                   verified,
                   email,
+                  password,
                 });
                 // localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('id', u.user.uid);
@@ -77,11 +86,13 @@ const Sign = (props) => {
           let user = {};
           getDocument(u.user.uid, 'users')
             .then((doc) => {
-              const {userName, verified} = doc.data();
+              const {userName, verified, password, email} = doc.data();
               user = {
                 id: doc.id,
                 verified,
                 userName,
+                password,
+                email,
               };
               setUser(user);
               // localStorage.setItem('user', JSON.stringify(user));
@@ -100,21 +111,21 @@ const Sign = (props) => {
         });
     }
   }
-  const onChange = (e, input) => {
-    switch (input) {
-      case 'email':
-        setEmail(e.target.value)
-        break;
-      case 'password':
-        setPassword(e.target.value)
-        break;
-      case 'confPassword': 
-        setConfPassword(e.target.value);
-        break;
-      default:
-        break;
-    }
-  }
+  // const onChange = (e, input) => {
+  //   switch (input) {
+  //     case 'email':
+  //       setEmail(e.target.value)
+  //       break;
+  //     case 'password':
+  //       setPassword(e.target.value)
+  //       break;
+  //     case 'confPassword': 
+  //       setConfPassword(e.target.value);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   return (
     <div className='sign-wrapper'>
@@ -128,25 +139,24 @@ const Sign = (props) => {
       </div>
       <form className='sign-form' onSubmit={onSubmit}>
         <div className='sign-form__inputs'>
-          <CustomInput placeholder='Email' inputFor='email'
-            onChange={onChange} value={email}/>
-          <CustomInput placeholder='Password' inputFor='password' 
-            type='password' onChange={onChange} value={password}/>
-          {isSignUp && <CustomInput placeholder='Confirm password' inputFor='confPassword' 
-            type='password' onChange={onChange}/>}
+          <CustomInput placeholder='Email' reference={emailRef} />
+          <CustomInput placeholder='Password' reference={passRef}
+            type='password' />
+          {isSignUp && <CustomInput placeholder='Confirm password' reference={passConfRef}
+            type='password'/>}
         </div>
         <CustomButton title={titles(isSignUp).button} onClick={onSubmit} 
-          type='submit' styles={signButtonsStyles.signBlue}/>
+          type='submit' styles={buttonsStyle.blue}/>
       </form>
       {!isSignUp && 
         <div style={{marginBottom: '20px'}}>
-          <Link to='/forgotPassword' style={signButtonsStyles.link}>
+          <Link to='/forgotPassword' style={buttonsStyle.link}>
           Forgot password?</Link>
         </div>
       }
       <div>
         <span>
-          {titles(isSignUp).tip} <Link to={titles(isSignUp).link} style={signButtonsStyles.link}>{isSignUp ? 'Login' : 'Sign up'}</Link>
+          {titles(isSignUp).tip} <Link to={titles(isSignUp).link} style={buttonsStyle.link}>{isSignUp ? 'Login' : 'Sign up'}</Link>
         </span>
       </div>
     </div>

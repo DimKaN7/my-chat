@@ -4,7 +4,7 @@ import './CustomInput.scss';
 function CustomInput(props) {
   const {
     placeholder, type='text', inputFor,
-    onChange,
+    onChange, reference=null,
     value, // потом убрать 
   } = props;
 
@@ -12,7 +12,8 @@ function CustomInput(props) {
     <div className='custom-input'>
       <input className='custom-input__input' name='input' 
               autoComplete='off' required type={type}
-              onChange={(e) => onChange(e, inputFor)}
+              // onChange={(e) => onChange(e, inputFor)}
+              ref={reference}
               value={value}/>
       <label htmlFor='input' className='custom-input__label'>
         <span>{placeholder}</span>

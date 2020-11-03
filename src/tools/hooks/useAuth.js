@@ -1,8 +1,16 @@
-// import {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {auth} from '../../firebase';
 
 const useAuth = () => {
-  // const [currentUser, setcurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+    })
+
+    return unsubscribe();
+  }, []);
 
   const signIn = (email, password) => {
     return auth.signInWithEmailAndPassword(email, password);
@@ -20,11 +28,21 @@ const useAuth = () => {
     return auth.sendPasswordResetEmail(email);
   }
 
+  const changeEmail = (email) => {
+    return currentUser.updateEmail(email);
+  }
+
+  const changePassword = (password) => {
+    return currentUser.updatePassword(password);
+  }
+
   return {
     signUp,
     signIn,
     logout,
     resetPassword,
+    changeEmail,
+    changePassword,
   };
 }
 

@@ -4,7 +4,7 @@ import '../../scss/signPage.scss';
 
 import talking from '../../assets/images/talking.png';
 import CustomButton from '../CustomButton/CustomButton';
-import {signButtonsStyles} from '../../tools/consts';
+import {buttonsStyle} from '../../tools/consts';
 
 const WelcomePage = () => {
   const history = useHistory();
@@ -28,8 +28,8 @@ const WelcomePage = () => {
         style={{backgroundImage: `url(${talking})`}}>
       </div>
       <div className='page__buttons'>
-        <CustomButton title='Sign up' onClick={onSignUp} styles={signButtonsStyles.signBlue}/>
-        <CustomButton title='Sign in' onClick={onSignIn} styles={signButtonsStyles.signWhite}/>
+        <CustomButton title='Sign up' onClick={onSignUp} styles={buttonsStyle.blue}/>
+        <CustomButton title='Sign in' onClick={onSignIn} styles={buttonsStyle.white}/>
       </div>
     </div>
   );

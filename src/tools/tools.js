@@ -40,3 +40,7 @@ export const addDocument = (doc, docId, collection) => {
 export const getDocument = (docId, collection) => {
   return db.collection(collection).doc(docId).get();
 }
+
+export const updateDocument = (fields, docId, collection) => {
+  return db.collection(collection).doc(docId).update(fields);
+}
