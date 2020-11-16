@@ -18,7 +18,7 @@ const Settings = (props) => {
     loading,
   } = props;
 
-  const [showPopup, toggleShowPopup] = useState(false);
+  const [showPopup, toggleShowPopup] = useState(true);
 
   const {logout} = useAuth();
   const history = useHistory();

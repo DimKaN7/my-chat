@@ -1,0 +1,10 @@
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  
+  >div {
+    width: fit-content;
+    display: flex;
+  }
+}

@@ -3,12 +3,13 @@ import {connect} from 'react-redux';
 import './SettingPopup.scss';
 
 import CustomButton from '../../../CustomButton/CustomButton';
-import {buttonsStyle} from '../../../../tools/consts';
 import CustomInput from '../../../CustomInput/CustomInput';
+import Marquee from '../../../Marquee/Marquee';
 import useAuth from '../../../../tools/hooks/useAuth';
-import { setLoading } from '../../../../actions/actions';
 import {setUser} from '../../../../actions/actions';
 import {updateDocument} from '../../../../tools/tools';
+import {buttonsStyle} from '../../../../tools/consts';
+import {setLoading} from '../../../../actions/actions';
 
 const SettingPopup = (props) => {
   const {
@@ -31,11 +32,22 @@ const SettingPopup = (props) => {
   const [backlightStyle, setBacklightStyle] = useState({});
   const [fieldsScrollerStyle, setFieldsScrollerStyle] = useState({});
   const [contentStyle, setContentStyle] = useState({});
+  const [catWrapperStyle, setCatWrapperStyle] = useState({});
 
   const [catIndex, setCatIndex] = useState(0);
   const [error, setError] = useState('');
 
   const {changeEmail, changePassword} = useAuth();
+
+  // useEffect(() => {
+  //   const catWrapperStyle = {
+  //     width: categoriesRef.current.clientWidth >= 300 
+  //       ? '100%'
+  //       : '300px',
+  //   };
+  //   setCatWrapperStyle(catWrapperStyle);
+  //   console.log(categoriesRef.current.clientWidth);
+  // }, [categoriesRef]);
 
   const onCategoriesClick = (cat) => {
     // проверка на нажатие уже выбранной категории
@@ -46,7 +58,7 @@ const SettingPopup = (props) => {
           ? `translateX(0px)`
           : cat === 1 
             ? `translateX(${userNameCatRef.current.clientWidth}px)`
-            : `translateX(${categoriesRef.current.clientWidth - passwordCatRef.current.clientWidth}px)`,
+            : `translateX(${userNameCatRef.current.clientWidth * 2}px)`,
       };
       const fieldsScrollerStyle = {
         transform: cat === 0 
@@ -60,11 +72,21 @@ const SettingPopup = (props) => {
           ? '305px'
           : '250px',
       }
+      const catWrapperStyle = categoriesRef.current.clientWidth < 300 
+        ? {
+          transform: cat === 0 
+            ? 'translateX(0)'
+            : cat === 1 
+              ? `translateX(-${150 - categoriesRef.current.clientWidth/2}px)`
+              : `translateX(-${300 - categoriesRef.current.clientWidth}px)`
+        }
+        : {};
 
       setCatIndex(cat);
       setContentStyle(contentStyle);
       setBacklightStyle(backlightStyle);
       setFieldsScrollerStyle(fieldsScrollerStyle);
+      setCatWrapperStyle(catWrapperStyle);
     }
   }
 
@@ -76,14 +98,17 @@ const SettingPopup = (props) => {
         onCancelClick();
       }
       else {
-        setLoading(true);
-        setUser({
-          ...user,
-          userName,
-        });
-        updateDocument({userName}, user.id, 'users');
-        setLoading(false);
-        onCancelClick();
+        if (userName.trim().length === 0) setError('User name can not be empty');
+        else {
+          setLoading(true);
+          setUser({
+            ...user,
+            userName,
+          });
+          updateDocument({userName}, user.id, 'users');
+          setLoading(false);
+          onCancelClick();
+        }
       }
     }
     // email change
@@ -148,20 +173,25 @@ const SettingPopup = (props) => {
     <div className='setting-popup'>
       <div className='setting-popup__wrapper'></div>
       <div className='setting-popup__content' style={contentStyle}>
-        <span style={{color: error ? 'red' : 'black'}}>{error || 'Profile editing'}</span>
+        <Marquee text={error || 'Profile editing'}
+          style={{marginBottom: '10px', color: `${error ? 'red' : 'black'}`, textAlign: `${error ? 'center' : 'start'}`}}
+        />
+        {/* <span style={{color: error ? 'red' : 'black'}}>{error || 'Profile editing'}</span> */}
         <div className='categories' ref={categoriesRef}>
-          <div className='backlight' style={backlightStyle}></div>
-          <div className={catIndex === 0 ? 'categories__user-name selected' : 'categories__user-name'} 
-            ref={userNameCatRef} onClick={() => onCategoriesClick(0)}>
-            User name
-          </div>
-          <div className={catIndex === 1 ? 'categories__email selected' : 'categories__email'} 
-            ref={emailCatRef} onClick={() => onCategoriesClick(1)}>
-            Email
-          </div>
-          <div className={catIndex === 2 ? 'categories__password selected' : 'categories__password'} 
-            ref={passwordCatRef} onClick={() => onCategoriesClick(2)}>
-            Password
+          <div className='categories-wrapper' style={catWrapperStyle}>
+            <div className='backlight' style={backlightStyle}></div>
+            <div className={catIndex === 0 ? 'categories__user-name selected' : 'categories__user-name'} 
+              ref={userNameCatRef} onClick={() => onCategoriesClick(0)}>
+              User name
+            </div>
+            <div className={catIndex === 1 ? 'categories__email selected' : 'categories__email'} 
+              ref={emailCatRef} onClick={() => onCategoriesClick(1)}>
+              Email
+            </div>
+            <div className={catIndex === 2 ? 'categories__password selected' : 'categories__password'} 
+              ref={passwordCatRef} onClick={() => onCategoriesClick(2)}>
+              Password
+            </div>
           </div>
         </div>
         <div className='input-fields'>

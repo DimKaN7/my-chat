@@ -22,7 +22,7 @@ const MainPage = (props) => {
 
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   useEffect(() => {
-    console.log(match.params.page);
+    // console.log(match.params.page);
     setPage(pages.map(p => p.toLowerCase()).indexOf(match.params.page));
     const update = () => {
       setInnerHeight(window.innerHeight);
